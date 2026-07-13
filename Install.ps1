@@ -33,7 +33,7 @@ $shortcut1.Save()
 # Raccourci Mods
 $modsPath = "$env:APPDATA\.minecraft\mods"
 if (Test-Path $modsPath) {
-    $shortcut2 = $shell.CreateShortcut("$desktop\Dossier Mods.lnk")
+    $shortcut2 = $shell.CreateShortcut("$desktop\Minecraft Crack Mods.lnk")
     $shortcut2.TargetPath = $modsPath
     $shortcut2.Save()
 }
