@@ -1,6 +1,3 @@
-# Création du script PowerShell (.ps1) pour automatiser les tâches demandées.
-
-ps1_content = r'''
 # Configuration
 $zipUrl = "https://github.com/pcochet74-dotcom/MineCraft_Cracked_Launcher/releases/download/v1.5.2/MineCraft_Cracked_Launcher.-.v1.5.2.zip"
 $extractPath = "$env:APPDATA\.minecraft crack"
@@ -38,15 +35,6 @@ if (Test-Path $target2) {
     $shortcut2 = $shell.CreateShortcut("$desktop\Dossier Mods.lnk")
     $shortcut2.TargetPath = $target2
     $shortcut2.Save()
-} else {
-    Write-Host "Le dossier mods n'existe pas, impossible de créer le raccourci." -ForegroundColor Yellow
 }
 
 Write-Host "Installation terminée avec succès !" -ForegroundColor Green
-'''
-
-# Sauvegarde du script
-with open("installer.ps1", "w", encoding="utf-8") as f:
-    f.write(ps1_content)
-
-print("Script PowerShell généré : installer.ps1
