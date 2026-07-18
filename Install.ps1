@@ -46,26 +46,31 @@ do {
         '2' {
             $desktop = [Environment]::GetFolderPath("Desktop")
             $shell = New-Object -ComObject WScript.Shell
-            $exePath = "$destPath\MinecraftCrackedLauncher.exe"
             
+            # Raccourci Launcher
+            $exePath = "$destPath\MinecraftCrackedLauncher.exe"
             if (Test-Path $exePath) {
-                $shortcut1 = $shell.CreateShortcut("$desktop\Minecraft Cracked Launcher.lnk")
-                $shortcut1.TargetPath = $exePath
-                $shortcut1.Save()
+                $s1 = $shell.CreateShortcut("$desktop\Minecraft Cracked Launcher.lnk")
+                $s1.TargetPath = $exePath
+                $s1.Save()
                 Write-Host "Raccourci du launcher créé." -ForegroundColor Green
             }
+            
+            # Raccourci Mods
             if (Test-Path $modsPath) {
-                $shortcut2 = $shell.CreateShortcut("$desktop\Dossier Mods.lnk")
-                $shortcut2.TargetPath = $modsPath
-                $shortcut2.Save()
+                $s2 = $shell.CreateShortcut("$desktop\Dossier Mods.lnk")
+                $s2.TargetPath = $modsPath
+                $s2.Save()
                 Write-Host "Raccourci du dossier Mods créé." -ForegroundColor Green
             }
+            
+            # Raccourci Config (Renommé en config.cmd sur le bureau)
             $cmdPath = "$destPath\Install.cmd"
             if (Test-Path $cmdPath) {
-                $shortcut3 = $shell.CreateShortcut("$desktop\Install Config.lnk")
-                $shortcut3.TargetPath = $cmdPath
-                $shortcut3.Save()
-                Write-Host "Raccourci de Install.cmd créé." -ForegroundColor Green
+                $s3 = $shell.CreateShortcut("$desktop\config.cmd.lnk")
+                $s3.TargetPath = $cmdPath
+                $s3.Save()
+                Write-Host "Raccourci 'config.cmd' créé sur le bureau." -ForegroundColor Green
             }
             Pause
         }
