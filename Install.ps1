@@ -12,9 +12,9 @@ function Show-Menu {
     Clear-Host
     Write-Host "=== Menu d'installation ===" -ForegroundColor Yellow
     Write-Host "1. Installer le Launcher"
-    Write-Host "2. Créer les raccourcis sur le bureau"
+    Write-Host "2. Installer le fichier de config (Install.cmd)"
     Write-Host "3. Installer les Mods"
-    Write-Host "4. Installer le fichier de config (Install.cmd)"
+    Write-Host "4. Créer les raccourcis sur le bureau"
     Write-Host "5. Quitter"
     return Read-Host "Faites votre choix (1-5)"
 }
@@ -44,6 +44,26 @@ do {
             Pause
         }
         '2' {
+            Write-Host "Téléchargement de Install.cmd..." -ForegroundColor Cyan
+            try {
+                if (-not (Test-Path $destPath)) { New-Item -Path $destPath -ItemType Directory -Force | Out-Null }
+                Invoke-WebRequest -Uri $cmdUrl -OutFile "$destPath\Install.cmd"
+                Write-Host "Install.cmd copié dans $destPath" -ForegroundColor Green
+            } catch { Write-Host "Erreur lors du téléchargement." -ForegroundColor Red }
+            Pause
+        }
+        '3' {
+            Write-Host "Téléchargement des Mods..." -ForegroundColor Cyan
+            try {
+                if (-not (Test-Path $modsPath)) { New-Item -Path $modsPath -ItemType Directory -Force | Out-Null }
+                Invoke-WebRequest -Uri $modsZipUrl -OutFile $zipFile
+                Expand-Archive -Path $zipFile -DestinationPath $modsPath -Force
+                Remove-Item $zipFile -Force
+                Write-Host "Mods installés." -ForegroundColor Green
+            } catch { Write-Host "Erreur lors de l'installation des mods." -ForegroundColor Red }
+            Pause
+        }
+        '4' {
             $desktop = [Environment]::GetFolderPath("Desktop")
             $shell = New-Object -ComObject WScript.Shell
             
@@ -72,26 +92,6 @@ do {
                 $s3.Save()
                 Write-Host "Raccourci 'config.cmd' créé sur le bureau." -ForegroundColor Green
             }
-            Pause
-        }
-        '3' {
-            Write-Host "Téléchargement des Mods..." -ForegroundColor Cyan
-            try {
-                if (-not (Test-Path $modsPath)) { New-Item -Path $modsPath -ItemType Directory -Force | Out-Null }
-                Invoke-WebRequest -Uri $modsZipUrl -OutFile $zipFile
-                Expand-Archive -Path $zipFile -DestinationPath $modsPath -Force
-                Remove-Item $zipFile -Force
-                Write-Host "Mods installés." -ForegroundColor Green
-            } catch { Write-Host "Erreur lors de l'installation des mods." -ForegroundColor Red }
-            Pause
-        }
-        '4' {
-            Write-Host "Téléchargement de Install.cmd..." -ForegroundColor Cyan
-            try {
-                if (-not (Test-Path $destPath)) { New-Item -Path $destPath -ItemType Directory -Force | Out-Null }
-                Invoke-WebRequest -Uri $cmdUrl -OutFile "$destPath\Install.cmd"
-                Write-Host "Install.cmd copié dans $destPath" -ForegroundColor Green
-            } catch { Write-Host "Erreur lors du téléchargement." -ForegroundColor Red }
             Pause
         }
     }
