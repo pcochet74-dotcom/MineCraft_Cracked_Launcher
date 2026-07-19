@@ -29,7 +29,7 @@ do {
                 if (Test-Path $tempExtract) { Remove-Item $tempExtract -Recurse -Force }
                 Expand-Archive -Path $zipFile -DestinationPath $tempExtract -Force
                 
-                $sourceDir = Join-Path $tempExtract "Minecraft"
+                $sourceDir = Join-Path $tempExtract "Nouveau dossier"
                 if (-not (Test-Path $destPath)) { New-Item -Path $destPath -ItemType Directory | Out-Null }
                 
                 if (Test-Path $sourceDir) {
