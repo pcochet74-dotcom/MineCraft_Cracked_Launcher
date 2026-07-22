@@ -1,7 +1,8 @@
 # Configuration
-$zipUrl = "https://github.com/pcochet74-dotcom/MineCraft_Cracked_Launcher/releases/download/v1.5.2/MineCraft_Cracked_Launcher.-.v1.5.2.zip"
-$modsServ1Url = "https://github.com/pcochet74-dotcom/MineCraft_Cracked_Launcher/releases/download/Mods/Mod.serveur.1.zip" # Remplace par l'URL du premier serveur
-$modsServ2Url = "https://github.com/pcochet74-dotcom/MineCraft_Cracked_Launcher/releases/download/Mods/Mod.serv.survie.zip" # Remplace par l'URL du second serveur
+$zipName = "Minecraft_Cracked_Launcher.-.v1.5.2.zip"
+$zipUrl = "https://github.com/pcochet74-dotcom/MineCraft_Cracked_Launcher/releases/download/v1.5.2/$zipName"
+$modsServ1Url = "https://github.com/pcochet74-dotcom/MineCraft_Cracked_Launcher/releases/download/Mods/Mods_Serv1.zip"
+$modsServ2Url = "https://github.com/pcochet74-dotcom/MineCraft_Cracked_Launcher/releases/download/Mods/Mods_Serv2.zip"
 $cmdUrl = "https://github.com/pcochet74-dotcom/MineCraft_Cracked_Launcher/releases/download/v1.5.2/Install.cmd"
 
 $destPath = "$env:APPDATA\.minecraft crack"
@@ -24,7 +25,7 @@ function Show-ModsMenu {
     Clear-Host
     Write-Host "=== Menu Mods ===" -ForegroundColor Yellow
     Write-Host "1. Installer les mods pour le Serveur 1"
-    Write-Host "2. Installer les mods pour le Serveur survie"
+    Write-Host "2. Installer les mods pour le Serveur 2"
     Write-Host "3. Retour au menu principal"
     return Read-Host "Faites votre choix (1-3)"
 }
@@ -39,15 +40,17 @@ do {
                 if (Test-Path $tempExtract) { Remove-Item $tempExtract -Recurse -Force }
                 Expand-Archive -Path $zipFile -DestinationPath $tempExtract -Force
                 
-                $sourceDir = Join-Path $tempExtract "Minecraft"
-                if (-not (Test-Path $destPath)) { New-Item -Path $destPath -ItemType Directory | Out-Null }
-                
-                if (Test-Path $sourceDir) {
-                    Move-Item -Path "$sourceDir\*" -Destination $destPath -Force
-                    Write-Host "Installation du launcher terminée !" -ForegroundColor Green
+                # Suppression de l'ancienne version du launcher avant installation
+                if (Test-Path $destPath) {
+                    Write-Host "Suppression de l'ancienne version du launcher..." -ForegroundColor Yellow
+                    Remove-Item "$destPath\*" -Recurse -Force -ErrorAction SilentlyContinue
                 } else {
-                    Write-Host "Erreur : Le dossier 'Minecraft' est introuvable." -ForegroundColor Red
+                    New-Item -Path $destPath -ItemType Directory | Out-Null
                 }
+                
+                Move-Item -Path "$tempExtract\*" -Destination $destPath -Force
+                Write-Host "Installation du launcher terminée !" -ForegroundColor Green
+                
                 Remove-Item $zipFile -Force
                 Remove-Item $tempExtract -Recurse -Force
             } catch { Write-Host "Erreur : $($_.Exception.Message)" -ForegroundColor Red }
@@ -69,7 +72,14 @@ do {
                     '1' {
                         Write-Host "Téléchargement des mods du Serveur 1..." -ForegroundColor Cyan
                         try {
-                            if (-not (Test-Path $modsPath)) { New-Item -Path $modsPath -ItemType Directory -Force | Out-Null }
+                            # Suppression des anciens mods avant d'installer la nouvelle version
+                            if (Test-Path $modsPath) {
+                                Write-Host "Suppression des anciens mods..." -ForegroundColor Yellow
+                                Remove-Item "$modsPath\*" -Recurse -Force -ErrorAction SilentlyContinue
+                            } else {
+                                New-Item -Path $modsPath -ItemType Directory -Force | Out-Null
+                            }
+
                             Invoke-WebRequest -Uri $modsServ1Url -OutFile $zipFile
                             Expand-Archive -Path $zipFile -DestinationPath $modsPath -Force
                             Remove-Item $zipFile -Force
@@ -78,14 +88,21 @@ do {
                         Pause
                     }
                     '2' {
-                        Write-Host "Téléchargement des mods du Serveur survie..." -ForegroundColor Cyan
+                        Write-Host "Téléchargement des mods du Serveur 2..." -ForegroundColor Cyan
                         try {
-                            if (-not (Test-Path $modsPath)) { New-Item -Path $modsPath -ItemType Directory -Force | Out-Null }
+                            # Suppression des anciens mods avant d'installer la nouvelle version
+                            if (Test-Path $modsPath) {
+                                Write-Host "Suppression des anciens mods..." -ForegroundColor Yellow
+                                Remove-Item "$modsPath\*" -Recurse -Force -ErrorAction SilentlyContinue
+                            } else {
+                                New-Item -Path $modsPath -ItemType Directory -Force | Out-Null
+                            }
+
                             Invoke-WebRequest -Uri $modsServ2Url -OutFile $zipFile
                             Expand-Archive -Path $zipFile -DestinationPath $modsPath -Force
                             Remove-Item $zipFile -Force
-                            Write-Host "Mods du Serveur survie installés." -ForegroundColor Green
-                        } catch { Write-Host "Erreur lors de l'installation des mods du Serveur survie." -ForegroundColor Red }
+                            Write-Host "Mods du Serveur 2 installés." -ForegroundColor Green
+                        } catch { Write-Host "Erreur lors de l'installation des mods du Serveur 2." -ForegroundColor Red }
                         Pause
                     }
                 }
