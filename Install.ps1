@@ -92,7 +92,7 @@ do {
                         Pause
                     }
                     '2' {
-                        Write-Host "Téléchargement des mods du Serveur 2..." -ForegroundColor Cyan
+                        Write-Host "Téléchargement des mods du Serveur survie..." -ForegroundColor Cyan
                         try {
                             # Suppression des anciens mods avant d'installer la nouvelle version
                             if (Test-Path $modsPath) {
@@ -105,8 +105,8 @@ do {
                             Invoke-WebRequest -Uri $modsServ2Url -OutFile $zipFile
                             Expand-Archive -Path $zipFile -DestinationPath $modsPath -Force
                             Remove-Item $zipFile -Force
-                            Write-Host "Mods du Serveur 2 installés." -ForegroundColor Green
-                        } catch { Write-Host "Erreur lors de l'installation des mods du Serveur 2." -ForegroundColor Red }
+                            Write-Host "Mods du Serveur survie installés." -ForegroundColor Green
+                        } catch { Write-Host "Erreur lors de l'installation des mods du Serveur survie." -ForegroundColor Red }
                         Pause
                     }
                 }
