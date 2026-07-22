@@ -12,7 +12,9 @@ $tempExtract = "$env:TEMP\temp_extract"
 
 function Show-Menu {
     Clear-Host
-    Write-Host "=== Menu d'installation ===" -ForegroundColor Yellow
+    Write-Host "===================================" -ForegroundColor Yellow
+    Write-Host "======= Menu d'installation =======" -ForegroundColor Yellow
+    Write-Host "===================================" -ForegroundColor Yellow
     Write-Host "1. Installer le Launcher"
     Write-Host "2. Installer le fichier de config (Install.cmd)"
     Write-Host "3. Installer les Mods"
@@ -23,9 +25,11 @@ function Show-Menu {
 
 function Show-ModsMenu {
     Clear-Host
-    Write-Host "=== Menu Mods ===" -ForegroundColor Yellow
+    Write-Host "===================================" -ForegroundColor Yellow
+    Write-Host "============ Menu Mods ============" -ForegroundColor Yellow
+    Write-Host "===================================" -ForegroundColor Yellow
     Write-Host "1. Installer les mods pour le Serveur 1"
-    Write-Host "2. Installer les mods pour le Serveur 2"
+    Write-Host "2. Installer les mods pour le Serveur survie"
     Write-Host "3. Retour au menu principal"
     return Read-Host "Faites votre choix (1-3)"
 }
